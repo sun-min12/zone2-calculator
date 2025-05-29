@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zone 심박수 계산기</title>
+  <style>
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: #f1f2f6;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2d3436;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin: 20px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #00b894;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #019875;
+    }
+    .result {
+      margin-top: 25px;
+    }
+    .zone {
+      background: #ecf0f1;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+    .zone h3 {
+      margin: 0 0 6px;
+      color: #2d3436;
+    }
+    .zone p {
+      margin: 0;
+      font-size: 14px;
+      color: #636e72;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔥 운동 심박수 Zone 계산기</h1>
+  <p>나이를 입력하면 각 운동 Zone의 심박수와 효과를 알려드릴게요.</p>
+  <input type="number" id="ageInput" placeholder="예: 30">
+  <button onclick="calculateZones()">계산하기</button>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  function calculateZones() {
+    const age = parseInt(document.getElementById("ageInput").value);
+    const resultDiv = document.getElementById("result");
+
+    if (!age || age <= 0 || age > 120) {
+      resultDiv.innerHTML = "⚠️ 유효한 나이를 입력해주세요.";
+      return;
+    }
+
+    const maxHR = 220 - age;
+    const zones = [
+      { name: "Zone 1", range: [0.5, 0.6], effect: "가벼운 활동 · 회복 운동에 적합 (지방 대사 활성화)" },
+      { name: "Zone 2", range: [0.6, 0.7], effect: "지속 가능한 유산소 운동 · 체지방 연소에 효과적" },
+      { name: "Zone 3", range: [0.7, 0.8], effect: "심폐지구력 향상 · 유산소/무산소 중간 단계" },
+      { name: "Zone 4", range: [0.8, 0.9], effect: "젖산 역치 향상 · 지구력 및 근력 증가" },
+      { name: "Zone 5", range: [0.9, 1.0], effect: "고강도 운동 · 최대 심박수에 가까운 훈련 (스프린트 등)" }
+    ];
+
+    let output = `<p>✅ 최대 심박수: <strong>${maxHR} bpm</strong></p>`;
+    
+    zones.forEach(zone => {
+      const lower = Math.round(maxHR * zone.range[0]);
+      const upper = Math.round(maxHR * zone.range[1]);
+      output += `
+        <div class="zone">
+          <h3>${zone.name} (${lower}~${upper} bpm)</h3>
+          <p>${zone.effect}</p>
+        </div>
+      `;
+    });
+
+    resultDiv.innerHTML = output;
+  }
+</script>
+
+</body>
+</html>
